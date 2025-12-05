@@ -29,7 +29,7 @@ Github-Crawler/
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/ravlyuk/Github-Crawler.git
 cd Github-Crawler
 ```
 
