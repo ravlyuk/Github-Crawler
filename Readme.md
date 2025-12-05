@@ -30,12 +30,15 @@ Github-Crawler/
 1. Clone the repository:
 ```bash
 git clone https://github.com/ravlyuk/Github-Crawler.git
+```
+```bash
 cd Github-Crawler
 ```
 
+
 2. Install dependencies using Poetry:
 ```bash
-poetry install
+poetry install --no-root
 ```
 
 ## Usage
