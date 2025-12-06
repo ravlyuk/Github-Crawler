@@ -4,12 +4,13 @@ import httpx
 from loguru import logger
 from lxml import html
 
-import src.config as cfg
+from src.config import Connection, Path
 from src.proxy import proxy_filter, format_proxy
 from src.schemas import SearchParams, TypeEnum
 
 
 async def get_search_results(search_params: SearchParams) -> list[dict]:
+    """Get search results from main page"""
     result = []
     logger.debug("Start proxy checking...")
     proxies = await format_proxy(search_params.proxies)
@@ -24,11 +25,11 @@ async def get_search_results(search_params: SearchParams) -> list[dict]:
         try:
             async with httpx.AsyncClient(
                 proxy=proxy,
-                timeout=cfg.TIMEOUT_SECOND,
-                limits=httpx.Limits(max_connections=cfg.MAX_CONNECTIONS),
+                timeout=Connection.TIMEOUT_SECOND,
+                limits=httpx.Limits(max_connections=Connection.MAX_CONNECTIONS),
             ) as client:
                 response = await client.get(
-                    url=cfg.SEARCH_URL,
+                    url=Connection.SEARCH_URL,
                     params={
                         "q": " ".join(search_params.keywords),
                         "type": search_params.type.value,
@@ -36,8 +37,8 @@ async def get_search_results(search_params: SearchParams) -> list[dict]:
                 )
 
                 tree = html.fromstring(response.text)
-                tree.make_links_absolute(cfg.BASE_URL)
-                urls = tree.xpath(cfg.ITEM_LINK_XPATH)
+                tree.make_links_absolute(Connection.BASE_URL)
+                urls = tree.xpath(Path.ITEM_LINK_XPATH)
 
                 if response.status_code == 200:
                     logger.info(
@@ -58,6 +59,7 @@ async def get_search_results(search_params: SearchParams) -> list[dict]:
 
 
 async def get_repository_extra_data(client: httpx.AsyncClient, url: str) -> dict:
+    """Get extra data from repository page."""
     logger.info(f"Getting extra data from repository {url}")
     try:
         response = await client.get(url)
@@ -69,10 +71,10 @@ async def get_repository_extra_data(client: httpx.AsyncClient, url: str) -> dict
     tree = html.fromstring(response.text)
 
     owner, css, html_, js = (
-        tree.xpath(cfg.USERNAME_VALUE_XPATH),
-        tree.xpath(cfg.CSS_VALUE_XPATH),
-        tree.xpath(cfg.HTML_VALUE_XPATH),
-        tree.xpath(cfg.JS_VALUE_XPATH),
+        tree.xpath(Path.USERNAME_VALUE_XPATH),
+        tree.xpath(Path.CSS_VALUE_XPATH),
+        tree.xpath(Path.HTML_VALUE_XPATH),
+        tree.xpath(Path.JS_VALUE_XPATH),
     )
 
     extra_data = {

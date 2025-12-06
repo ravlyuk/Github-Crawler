@@ -2,6 +2,7 @@ import json
 import pytest
 from unittest.mock import mock_open, patch
 
+
 from src.main import read_input_json, validate_data, save_output_json
 from src.schemas import SearchParams, TypeEnum
 
@@ -33,6 +34,7 @@ def test_validate_data_valid():
 
 def test_validate_data_invalid():
     """Test validating invalid data exits."""
+
     data = {"keywords": ["test"], "type": "InvalidType", "proxies": ["127.0.0.1:8080"]}
 
     with pytest.raises(SystemExit):

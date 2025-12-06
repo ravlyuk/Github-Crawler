@@ -41,11 +41,19 @@ cd Github-Crawler
 poetry install --no-root
 ```
 
+**Note:** You don't need to manually activate the virtual environment. Poetry automatically manages it when you use `poetry run` commands.
+
+
 ## Usage
+
+The application accepts command-line arguments to specify input and output files:
+- `-i` or `--input` — path to the input JSON file (required)
+- `-o` or `--output` — path to the output JSON file (required)
+- `-h` or `--help` — show help message with examples
 
 ### Running the Application
 
-1. Configure your search parameters in `src/input.json`:
+1. Configure your search parameters in an input JSON file (e.g., `input.json`):
 ```json
 {
   "keywords": ["openstack", "nova", "css"],
@@ -54,28 +62,40 @@ poetry install --no-root
 }
 ```
 
-2. Run the crawler:
+**Note:** Unicode characters are fully supported in the input file.
+
+2. Run the crawler from the command line:
 ```bash
-poetry run python -m src.main
+poetry run python -m src.main -i input.json -o output.json
 ```
 
-3. Results will be saved to `src/output.json`
+3. Results will be saved to the specified output file.
+
+### Get Help
+
+To see all available options and examples:
+```bash
+poetry run python -m src.main --help
+```
 
 ### Available Search Types
 
 - `Repositories` - Search for GitHub repositories (includes extra metadata)
+- `Issues` - Search for GitHub issues
 - `Wikis` - Search for GitHub wiki pages
-- `Issues` - Search for GitHub issues pages
 
 ## Testing
 
-### Run All Tests
+### Run All Tests with Verbose Output
 
 ```bash
 poetry run pytest -v
 ```
-### Show Coverage Percentage Only
+
+### Run Tests with Coverage Report
 
 ```bash
 poetry run pytest --cov=src
 ```
+
+This will show you the percentage of code covered by tests for each module.
