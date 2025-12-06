@@ -17,7 +17,7 @@ def read_input_json(file_name: str) -> dict:
         return json.load(input_json)
 
 
-def validate_data(data: dict) -> SearchParams | None:
+def validate_data(data: dict) -> SearchParams:
     """Validate input data against SearchParams schema."""
     logger.info("Validating input data")
     try:
