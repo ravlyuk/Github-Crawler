@@ -46,11 +46,6 @@ poetry install --no-root
 
 ## Usage
 
-The application accepts command-line arguments to specify input and output files:
-- `-i` or `--input` — path to the input JSON file (required)
-- `-o` or `--output` — path to the output JSON file (required)
-- `-h` or `--help` — show help message with examples
-
 ### Running the Application
 
 1. Configure your search parameters in an input JSON file (e.g., `input.json`):
@@ -62,12 +57,14 @@ The application accepts command-line arguments to specify input and output files
 }
 ```
 
-**Note:** Unicode characters are fully supported in the input file.
-
 2. Run the crawler from the command line:
 ```bash
 poetry run python -m src.main -i input.json -o output.json
 ```
+The application accepts command-line arguments to specify input and output files:
+- `-i` or `--input` — path to the input JSON file (required)
+- `-o` or `--output` — path to the output JSON file (required)
+- `-h` or `--help` — show help message with examples
 
 3. Results will be saved to the specified output file.
 
