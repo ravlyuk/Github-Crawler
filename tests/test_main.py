@@ -1,10 +1,10 @@
 import json
-import pytest
 from unittest.mock import mock_open, patch
 
+import pytest
 
-from src.main import read_input_json, validate_data, save_output_json
-from src.schemas import SearchParams, TypeEnum
+from src.main import read_input_json, validate_data, save_output_json, parse_args
+from src.schemas import SearchParams
 
 
 def test_read_input_json():
@@ -48,4 +48,14 @@ def test_save_output_json():
     mock_file = mock_open()
     with patch("builtins.open", mock_file):
         save_output_json("output.json", data)
-        mock_file.assert_called_once_with("output.json", "w")
+        mock_file.assert_called_once_with("output.json", "w", encoding="utf-8")
+
+
+def test_parse_args_with_valid_arguments():
+    """Test parse_args with valid input and output arguments."""
+    test_args = ["prog", "-i", "input.json", "-o", "output.json"]
+
+    with patch("sys.argv", test_args):
+        args = parse_args()
+        assert args.input == "input.json"
+        assert args.output == "output.json"
